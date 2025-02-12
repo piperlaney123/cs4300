@@ -23,7 +23,7 @@ def is_prime(num):
     if num <= 1:
         return False
     else:
-        for i in range(2, int(math.sqrt(num)) + 1):
+        for i in range(2, int(math.sqrt(num)) + 1): # make sure to add 1 because last num isn't inclusive 
             if num % i == 0:
                 return False
             
@@ -83,16 +83,4 @@ class TestClass:
     def test_find_sum_100(self):
         assert find_sum_100() == 5050
 
-
-"""
-just kidding, this isn't needed.
-flag = True
-while flag:
-    try:
-        num = float(input("Please enter a number: "))
-        print(test_num(num))
-        flag = False
-    except ValueError:
-        print("... That's not a number.")
-"""
 
