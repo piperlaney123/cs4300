@@ -11,6 +11,7 @@ modify, or create other code. In other words, metaprogramming is a way of writin
 import string
 import os
 
+# counts words in a txt file; receives a file object, returns word count 
 def count_words_in_file(filename):
 
     word_count = 0

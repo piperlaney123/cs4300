@@ -11,6 +11,7 @@ favorite_books = ["Alias Grace by Margaret Atwood", "Milkweed by Jerry Spinelli"
 # dictionary of basic student database
 student_database = {"John Doe": 1234, "Jane Doe": 5678, "Piper DeHoyos": 9999, "Harry Styles": 1111, "Rami Malek": 2323, "Light Yagami": 4444}
 
+# returns first 3 items from a list using list slicing; recieves a list
 def first_three_items(a_list):
     return a_list[:3]
 
