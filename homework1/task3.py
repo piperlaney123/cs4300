@@ -55,6 +55,3 @@ def find_sum_100():
     return(sum)
 
 
-generate_prime_nums()
-find_sum_100()
-
