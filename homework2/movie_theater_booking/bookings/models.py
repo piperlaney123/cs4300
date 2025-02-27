@@ -59,5 +59,5 @@ class Booking(models.Model):
     booking_date = models.DateField()
 
     # for printing & testing
-    #def __str__(self):
+    def __str__(self):
         return self.booking_user.username
