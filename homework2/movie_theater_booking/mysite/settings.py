@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+# im adding this to fix my url problem. 
+# usually im used to the base url being the local host, http://127.0.0.1:8000/
+# but dev edu doesnt do this.... im not entirely sure on the specifics of why or what is happening
+# but all i know is that this is the base url i need to have to make my urls work properly
+BASE_URL = "https://editor-pdehoyos-5.devedu.io/proxy/8000"
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,20 +33,21 @@ SECRET_KEY = 'django-insecure-m&%*+)fpefxow_q52%bc+y_bq5xj$475v1k!-)p&8$7wspifu$
 DEBUG = True
 
 # for some reason, my local host url is https://editor-pdehoyos-5.devedu.io/proxy/8000/....
-ALLOWED_HOSTS = ['http://127.0.0.1:8000/', 'editor-pdehoyos-5.devedu.io']
+ALLOWED_HOSTS = ['http://127.0.0.1:8000/', 'editor-pdehoyos-5.devedu.io', '']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     # activate models: include app in project -- add reference to config class
-    'bookings.apps.BookingsConfig',
+    #'bookings.apps.BookingsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bookings'
 ]
 
 MIDDLEWARE = [

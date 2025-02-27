@@ -11,8 +11,10 @@ def seat_booking(request, movie_id):
     # get the movie that was selected by user
     movie = Movie.objects.get(id=movie_id)
     # get all seats of the movie by using the movie's title
-    seats = Seat.objects.all(movie = movie.movie_title)
+    # have to fix this later
+    seats = Seat.objects.filter(movie=movie)
 
+    '''
     if request.method == "POST":
         # get the seat chosen by user
         seat_id = request.POST.get("seat_id")
@@ -27,6 +29,7 @@ def seat_booking(request, movie_id):
             seat.seat_booking_status = False
             # save to database
             seat.save()
+    '''
         
     return render(request, 'bookings/seat_booking.html', {'movie': movie, 'seats': seats})
 
