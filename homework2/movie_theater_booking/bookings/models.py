@@ -54,6 +54,8 @@ class Booking(models.Model):
     # for one seat at a movie theater)
     seat = models.OneToOneField(Seat, on_delete=models.CASCADE, related_name="booking")
     # user, using djangos built in user model
+    # i have null = True and blank = True bc im not doing user login and authentication; only
+    # anon users, so... 
     booking_user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     # booking date
     booking_date = models.DateField()

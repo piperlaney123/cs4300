@@ -14,10 +14,9 @@ def seat_booking(request, movie_id):
     # get the movie that was selected by user
     movie = Movie.objects.get(id=movie_id)
     # get all seats of the movie by using the movie's title
-    # have to fix this later
     seats = Seat.objects.filter(movie=movie)
 
-
+    # for booking seats
     if request.method == "POST":
         # get the seat chosen by user
         seat_id = request.POST.get("seat_id")
@@ -25,7 +24,10 @@ def seat_booking(request, movie_id):
 
         # if seat is available
         if seat.seat_booking_status:
+            # create booking 
+            # user will be anonymous since not implementing login/authentication yet; so logic to include this
             Booking.objects.create(movie=movie, seat=seat, booking_user = request.user if request.user.is_authenticated else None, booking_date=now().date())
+            # now that seat has been booked and tied to booking instance, make it unavailable
             seat.seat_booking_status = False
             seat.save()
 
