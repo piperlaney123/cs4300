@@ -1,0 +1,11 @@
+{% extends 'bookings/base.html' %}
+
+{% block content %}
+<h1>Your Bookings</h1>
+<h1> Thank you for booking!</h1>
+<ul>
+    {% for booking in bookings %}
+        <li>{{ booking.movie.title }} - {{ booking.booking_date }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}

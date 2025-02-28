@@ -13,6 +13,16 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+
+# i have to add this because im using a proxy. this was causing problems w/ django's csrf function;
+# when django checked the origin header in a POST request and saw https://editor-pdehoyos-5.devedu.io,
+# it wasnt recognizing it and thus wasn't trusting it, throwing a 403 forbidden error whenver
+# i tried to book a seat (bc it used a post request csrf token)
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://editor-pdehoyos-5.devedu.io"
+]
+
 # im adding this to fix my url problem. 
 # usually im used to the base url being the local host, http://127.0.0.1:8000/
 # but dev edu doesnt do this.... im not entirely sure on the specifics of why or what is happening

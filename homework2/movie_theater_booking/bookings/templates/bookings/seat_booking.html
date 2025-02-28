@@ -1,11 +1,11 @@
 {% extends 'bookings/base.html' %}
 
 {% block content %}
-<h2>Book Seats for {{ movie.movie_title }}</h2>
+<h1>Book Seats for {{ movie.movie_title }}</h1>
 <ul>
     {% for seat in seats %}
         <li>{{ seat.seat_number }} - {% if not seat.seat_booking_status %}Booked{% else %}
-            <form method="post">
+            <form method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="seat_id" value="{{ seat.id }}">
                 <button type="submit">Book</button>

@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login
+from django.utils.timezone import now
 from .models import *
 
 
@@ -7,6 +9,7 @@ def movie_list(request):
     movies = Movie.objects.all()
     return render(request, 'bookings/movie_list.html', {'movies': movies})
 
+
 def seat_booking(request, movie_id):
     # get the movie that was selected by user
     movie = Movie.objects.get(id=movie_id)
@@ -14,7 +17,7 @@ def seat_booking(request, movie_id):
     # have to fix this later
     seats = Seat.objects.filter(movie=movie)
 
-    '''
+
     if request.method == "POST":
         # get the seat chosen by user
         seat_id = request.POST.get("seat_id")
@@ -22,17 +25,15 @@ def seat_booking(request, movie_id):
 
         # if seat is available
         if seat.seat_booking_status:
-            # update booking with seat 
-            # MIGHT HAVE TO DO MORE WITH THIS FOR BOOKING - UPDATE MOVIE, USER, BOOKING DATE...
-            Booking.objects.create(user=request.user, movie=movie).seat.add(seat)
-            # make seat unavailable
+            Booking.objects.create(movie=movie, seat=seat, booking_user = request.user if request.user.is_authenticated else None, booking_date=now().date())
             seat.seat_booking_status = False
-            # save to database
             seat.save()
-    '''
+
+            return redirect("booking_history")
+
         
     return render(request, 'bookings/seat_booking.html', {'movie': movie, 'seats': seats})
 
 def booking_history(request):
-    bookings = Booking.objects.filter(user=request.user)
+    bookings = Booking.objects.filter(booking_user=request.user.id)
     return render(request, 'bookings/booking_history.html', {'bookings': bookings})

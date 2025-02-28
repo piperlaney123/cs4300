@@ -8,8 +8,8 @@
 </head>
 <body>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'movie_list' %}">Movies</a>
-        <a class="navbar-brand" href="{% url 'booking_history' %}">My Bookings</a>
+        <a class="navbar-brand" href="/proxy/8000{% url 'movie_list' %}">Movies</a>
+        <a class="navbar-brand" href="/proxy/8000{% url 'booking_history' %}">My Bookings</a>
     </nav>
     <div class="container mt-4">
         {% block content %}{% endblock %}
