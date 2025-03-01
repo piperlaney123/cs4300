@@ -1,16 +1,31 @@
 {% extends 'bookings/base.html' %}
-
 {% block content %}
 <h1>Book Seats for {{ movie.movie_title }}</h1>
-<ul>
-    {% for seat in seats %}
-        <li>{{ seat.seat_number }} - {% if not seat.seat_booking_status %}Booked{% else %}
-            <form method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="seat_id" value="{{ seat.id }}">
-                <button type="submit">Book</button>
-            </form>
-        {% endif %}</li>
-    {% endfor %}
-</ul>
+<div class="container text-center">
+    <div class="row">
+        {% for seat in seats %}
+            <div class="col-2">
+                <div class="p-2 border {% if not seat.seat_booking_status %} bg-light {% else %} bg-light{% endif %}">
+                    {{ seat.seat_number }} 
+                    {% if seat.seat_booking_status %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="seat_id" value="{{ seat.id }}">
+                            <button type="submit" class="btn btn-primary btn-sm mt-1">Book</button>
+                        </form>
+                    {% else %}
+                        <br>
+                        <button type="submit" disabled class="btn btn-danger btn-sm mt-1">Taken</button>
+                    {% endif %}
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:5 %}
+                </div><div class="row">
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+
+
 {% endblock %}

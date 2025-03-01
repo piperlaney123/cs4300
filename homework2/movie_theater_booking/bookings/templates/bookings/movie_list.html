@@ -1,10 +1,24 @@
 {% extends 'bookings/base.html' %}
 
+
 {% block content %}
 <h1>Movies</h1>
-<ul>
     {% for movie in movies %}
-        <li>{{ movie.movie_title }} - <a href="/proxy/8000{% url 'seat_booking' movie.id %}">Book Seats</a></li>
+    <div class="row">
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">{{ movie.movie_title }}</h4>
+              <h6> {{ movie.movie_r_date }} • {{ movie.movie_duration }}m</h6>
+              <p class="card-text">{{ movie.movie_desc }}</p>
+              <a href="/proxy/8000{% url 'seat_booking' movie.id %}" class="btn btn-primary">Book Seats</a>
+            </div>
+          </div>
+        </div>
+      </div>
     {% endfor %}
-</ul>
 {% endblock %}
+
+
+
+
