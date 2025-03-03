@@ -34,6 +34,7 @@ class Movie(models.Model):
 # Seat
 class Seat(models.Model):
     # movie seat
+    # related name means reverse relation for movie model, so its like movie has attribute seats!...
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name="seats")
     # seat number
     seat_number = models.IntegerField()
