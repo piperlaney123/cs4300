@@ -46,14 +46,12 @@ def booking_history(request):
     bookings = Booking.objects.filter(booking_user=request.user.id)
     return render(request, 'bookings/booking_history.html', {'bookings': bookings})
 
+# viewsets
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
-
-
 class SeatViewSet(viewsets.ViewSet):
-
     queryset = Seat.objects.all()
     serializer_class = SeatSerializer
 
@@ -82,4 +80,13 @@ class SeatViewSet(viewsets.ViewSet):
             return Response({"detail": "Movie not found."}, status=status.HTTP_404_NOT_FOUND)
         except Seat.DoesNotExist:
             return Response({"detail": "Seat not found."}, status=status.HTTP_404_NOT_FOUND)
+
+class BookingViewSet(viewsets.ViewSet):
+
+    @action(detail=False, methods=['GET'])
+    def history(self, request):
+        bookings = Booking.objects.filter(booking_user=request.user.id)
+        serializer = BookingSerializer(bookings, many=True)
+        return Response(serializer.data)
+
 

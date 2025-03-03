@@ -10,6 +10,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register(r'movies', MovieViewSet, basename='movie')
 router.register(r'seats', SeatViewSet, basename='seat')
+router.register(r'bookings', BookingViewSet, basename='booking')
 
 urlpatterns = [
     # landing page will be movie list page
