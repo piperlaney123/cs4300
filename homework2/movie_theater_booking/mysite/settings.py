@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # i have to add this because im using a proxy. this was causing problems w/ django's csrf function;
 # when django checked the origin header in a POST request and saw https://editor-pdehoyos-5.devedu.io,
@@ -23,14 +25,16 @@ CSRF_TRUSTED_ORIGINS = [
     "https://editor-pdehoyos-5.devedu.io"
 ]
 
+# Allow proxy server to work correctly
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # im adding this to fix my url problem. 
 # usually im used to the base url being the local host, http://127.0.0.1:8000/
 # but dev edu doesnt do this.... im not entirely sure on the specifics of why or what is happening
 # but all i know is that this is the base url i need to have to make my urls work properly
-BASE_URL = "https://editor-pdehoyos-5.devedu.io/proxy/8000"
+#BASE_URL = "https://editor-pdehoyos-5.devedu.io/proxy/8000"
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,7 +47,7 @@ SECRET_KEY = 'django-insecure-m&%*+)fpefxow_q52%bc+y_bq5xj$475v1k!-)p&8$7wspifu$
 DEBUG = True
 
 # for some reason, my local host url is https://editor-pdehoyos-5.devedu.io/proxy/8000/....
-ALLOWED_HOSTS = ['http://127.0.0.1:8000/', 'editor-pdehoyos-5.devedu.io', '']
+ALLOWED_HOSTS = ['http://127.0.0.1:8000/', 'editor-pdehoyos-5.devedu.io', 'localhost', '127.0.0.1','editor-pdehoyos-5.devedu.io/proxy/8000']
 
 
 # Application definition
@@ -59,6 +63,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookings',
     'bootstrap5',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -138,10 +143,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+
+STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : [
+        'rest_framework.permissions.AllowAny', 
+    ]
+}
 

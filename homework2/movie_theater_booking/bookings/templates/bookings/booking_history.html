@@ -3,9 +3,11 @@
 {% block content %}
 <h1>Your Bookings</h1>
 <h1> Thank you for booking!</h1>
-<ul>
+<ul class="list-group">
     {% for booking in bookings %}
-        <li>{{ booking.movie.title }} - {{ booking.booking_date }}</li>
+        <li class="list-group-item">{{ booking.movie.movie_title }} <br> {{ booking.booking_date }} <br>Seat Number: {{booking.seat}}</li>
     {% endfor %}
 </ul>
 {% endblock %}
+
+
