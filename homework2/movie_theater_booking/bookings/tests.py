@@ -152,7 +152,6 @@ class BookingModelTest(TestCase):
 class PostViewTestCase(APITestCase):
     def setUp(self):
         # set up & create models
-        
         self.user = User.objects.create_user(username="testuser", password="password123")
         self.movie = Movie.objects.create(movie_title="Test Movie", movie_desc="A test movie description", movie_r_date="2025-01-01", movie_duration=120)
         self.seat = Seat.objects.create(movie=self.movie, seat_number=11, seat_booking_status=True)
@@ -160,8 +159,8 @@ class PostViewTestCase(APITestCase):
         
         # endpoints
         self.movie_list_url = "/api/movies/"
-        self.book_seat_url = "/api/seat/book_seat"
-        self.booking_history_url = "/api/bookings/history"
+        self.book_seat_url = "/api/seats/book_seat/"
+        self.booking_history_url = "/api/bookings/history/"
         self.movie_update_url = f"/api/movies/{self.movie.id}/" # also for deleting...
 
     
@@ -213,3 +212,27 @@ class PostViewTestCase(APITestCase):
         self.assertFalse(Movie.objects.filter(id=self.movie.id).exists())
 
     # testing time: book seats
+
+    def test_book_seat(self):
+        data = {
+            "movie_id": self.movie.id,
+            "seat_number": 3
+        }
+        response = self.client.post(self.book_seat_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["detail"], "Seat booked successfully.")
+
+        # Check if seat status updated
+        seat = Seat.objects.get(movie=self.movie, seat_number = 3)
+        self.assertFalse(seat.seat_booking_status)
+        
+    # testing time: view booking history
+
+    def test_booking_history(self):
+        self.client.force_authenticate(user=self.user)  # Authenticate the user
+        response = self.client.get(self.booking_history_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        serializer_data = BookingSerializer([self.booking], many=True).data
+        self.assertEqual(response.data, serializer_data)
+       
+

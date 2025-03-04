@@ -87,6 +87,6 @@ class BookingViewSet(viewsets.ViewSet):
     def history(self, request):
         bookings = Booking.objects.filter(booking_user=request.user.id)
         serializer = BookingSerializer(bookings, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
