@@ -11,7 +11,7 @@
               <h4 class="card-title">{{ movie.movie_title }}</h4>
               <h6> {{ movie.movie_r_date }} • {{ movie.movie_duration }}m</h6>
               <p class="card-text">{{ movie.movie_desc }}</p>
-              <a href="/proxy/8000{% url 'seat_booking' movie.id %}" class="btn btn-primary">Book Seats</a>
+              <a href="{% url 'seat_booking' movie.id %}" class="btn btn-primary">Book Seats</a>
             </div>
           </div>
         </div>

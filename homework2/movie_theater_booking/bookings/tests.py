@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 from .models import *
 from django.utils.timezone import now
 from datetime import date
-
+from rest_framework.test import APITestCase
+from rest_framework import status
+from .serializers import *
 
 # Create your tests here.
 
@@ -144,3 +146,70 @@ class BookingModelTest(TestCase):
         )
 
         self.assertEqual(str(booking), "testuser")
+
+
+# test api endpoints 
+class PostViewTestCase(APITestCase):
+    def setUp(self):
+        # set up & create models
+        
+        self.user = User.objects.create_user(username="testuser", password="password123")
+        self.movie = Movie.objects.create(movie_title="Test Movie", movie_desc="A test movie description", movie_r_date="2025-01-01", movie_duration=120)
+        self.seat = Seat.objects.create(movie=self.movie, seat_number=11, seat_booking_status=True)
+        self.booking = Booking.objects.create(movie=self.movie,seat=self.seat,booking_user=self.user,booking_date="2025-01-01")
+        
+        # endpoints
+        self.movie_list_url = "/api/movies/"
+        self.book_seat_url = "/api/seat/book_seat"
+        self.booking_history_url = "/api/bookings/history"
+        self.movie_update_url = f"/api/movies/{self.movie.id}/" # also for deleting...
+
+    
+    # testing time: movie
+    # get
+    def test_get_movie(self):
+        response = self.client.get(self.movie_list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data),1)
+        self.assertEqual(response.data[0]["movie_title"], "Test Movie")
+        serializer_data = MovieSerializer([self.movie], many=True).data
+        self.assertEqual(response.data, serializer_data)
+    
+    # post
+    def test_create_movie(self):
+        data = {
+            "movie_title": "New Movie",
+            "movie_desc": "This is a new test movie.",
+            "movie_r_date": "2025-06-01",
+            "movie_duration": 150
+        }
+
+        response = self.client.post(self.movie_list_url, data, format="json")
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)  # Check if movie was created
+        self.assertEqual(response.data["movie_title"], "New Movie")  # Verify correct data
+        self.assertEqual(Movie.objects.count(), 2)  # make sure movie was created, 2 b/c we already created a movie in past 
+
+    # put/update
+    def test_update_movie(self):
+        data = {
+            "movie_title": "Updated New Movie",
+            "movie_desc": "Updated This is a new test movie.",
+            "movie_r_date": "2024-06-01",
+            "movie_duration": 130
+        }
+
+        response = self.client.put(self.movie_update_url, data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["movie_title"], "Updated New Movie")
+        self.assertEqual(response.data["movie_desc"], "Updated This is a new test movie.")
+        self.assertEqual(response.data["movie_r_date"], "2024-06-01")
+        self.assertEqual(response.data["movie_duration"], 130)
+
+    # delete
+    def test_delete_post(self):
+        response = self.client.delete(self.movie_update_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertFalse(Movie.objects.filter(id=self.movie.id).exists())
+
+    # testing time: book seats

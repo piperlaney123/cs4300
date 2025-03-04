@@ -47,7 +47,7 @@ SECRET_KEY = 'django-insecure-m&%*+)fpefxow_q52%bc+y_bq5xj$475v1k!-)p&8$7wspifu$
 DEBUG = True
 
 # for some reason, my local host url is https://editor-pdehoyos-5.devedu.io/proxy/8000/....
-ALLOWED_HOSTS = ['http://127.0.0.1:8000/', 'editor-pdehoyos-5.devedu.io', 'localhost', '127.0.0.1','editor-pdehoyos-5.devedu.io/proxy/8000']
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost", "editor-pdehoyos-5.devedu.io"]
 
 
 # Application definition
@@ -162,4 +162,10 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny', 
     ]
 }
+
+FORCE_SCRIPT_NAME = "/proxy/3000"
+
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
