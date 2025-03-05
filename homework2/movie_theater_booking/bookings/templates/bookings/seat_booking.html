@@ -1,12 +1,13 @@
 {% extends 'bookings/base.html' %}
 {% block content %}
+<div class="container justify-content-center">
 <h1>Book Seats for {{ movie.movie_title }}</h1>
 <div class="container text-center">
     <div class="row">
         {% for seat in seats %}
             <div class="col-2">
-                <div class="p-2 border {% if not seat.seat_booking_status %} bg-light {% else %} bg-light{% endif %}">
-                    {{ seat.seat_number }} 
+                <div class="p-2 border h-100 d-flex flex-column align-items-center justify-content-center">
+                    <span>{{ seat.seat_number }}</span> 
                     {% if seat.seat_booking_status %}
                         <form method="POST">
                             {% csrf_token %}
@@ -14,7 +15,6 @@
                             <button type="submit" class="btn btn-primary btn-sm mt-1">Book</button>
                         </form>
                     {% else %}
-                        <br>
                         <button type="submit" disabled class="btn btn-danger btn-sm mt-1">Taken</button>
                     {% endif %}
                 </div>
@@ -25,7 +25,5 @@
         {% endfor %}
     </div>
 </div>
-
-
-
 {% endblock %}
+</div>

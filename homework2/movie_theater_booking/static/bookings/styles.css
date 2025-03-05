@@ -1,0 +1,16 @@
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: purple;
+    --bs-btn-border-color: purple;
+ 
+}
+
+.btn-primary:hover {
+    background-color: #eb34eb;
+    border-color: #eb34eb;
+}
+
+
+.navbar-expand-lg {
+    background-color: purple;
+}

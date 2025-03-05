@@ -9,11 +9,12 @@ from .serializers import *
 
 # Create your tests here.
 
+### unit model tests ###
 
 class MovieModelTest(TestCase):
 
     def test_movie_creation(self):
-        # Test if a movie is created successfully
+        # test if a movie is created successfully
         movie = Movie.objects.create(
             movie_title="Test Movie",
             movie_desc="This is a test description.",
@@ -26,7 +27,7 @@ class MovieModelTest(TestCase):
         self.assertEqual(movie.movie_duration, 120)
     
     def test_movie_creates_seats(self):
-        # Test if 10 seats are created when a movie is saved
+        # test if 10 seats are created when a movie is saved
         movie = Movie.objects.create(
             movie_title="Test Movie",
             movie_desc="This is a test description.",
@@ -36,7 +37,7 @@ class MovieModelTest(TestCase):
         self.assertEqual(movie.seats.count(), 10)
 
     def test_movie_str(self):
-        # Test the string representation of the movie model 
+        # test the string representation of the movie model 
         movie = Movie.objects.create(
             movie_title="Test Movie",
             movie_desc="Test description",
@@ -49,7 +50,7 @@ class MovieModelTest(TestCase):
 class SeatModelTest(TestCase):
 
     def test_seat_creation(self):
-        # Test if a seat is correctly created and linked to a movie 
+        # test if a seat is correctly created and linked to a movie 
         movie = Movie.objects.create(
             movie_title="Test Movie",
             movie_desc="Test description",
@@ -63,7 +64,7 @@ class SeatModelTest(TestCase):
         self.assertTrue(seat.seat_booking_status)
 
     def test_seat_str(self):
-        # Test the string representation of the seat model 
+        # test the string representation of the seat model 
         movie = Movie.objects.create(
             movie_title="Test Movie",
             movie_desc="Test description",
@@ -77,7 +78,7 @@ class SeatModelTest(TestCase):
 class BookingModelTest(TestCase):
 
     def test_booking_creation(self):
-        # Test if a booking is successfully created 
+        # test if a booking is successfully created 
         user = User.objects.create_user(username="testuser", password="password123")
         movie = Movie.objects.create(
             movie_title="Test Movie",
@@ -100,7 +101,7 @@ class BookingModelTest(TestCase):
         self.assertEqual(booking.booking_date, date(2025, 3, 3))
 
     def test_booking_seat_uniqueness(self):
-        # Test that a seat cannot be booked twice!
+        # test that a seat cannot be booked twice!
         user1 = User.objects.create_user(username="user1", password="password123")
         user2 = User.objects.create_user(username="user2", password="password123")
         movie = Movie.objects.create(
@@ -111,7 +112,7 @@ class BookingModelTest(TestCase):
         )
         seat = movie.seats.first()
 
-        # First booking should be successful
+        # first booking should be successful
         Booking.objects.create(
             movie=movie,
             seat=seat,
@@ -119,8 +120,8 @@ class BookingModelTest(TestCase):
             booking_date=date(2025, 3, 3)
         )
 
-        # Second booking should fail
-        with self.assertRaises(Exception):  # Since seat is OneToOneField
+        # second booking should fail
+        with self.assertRaises(Exception):  # since seat is OneToOneField
             Booking.objects.create(
                 movie=movie,
                 seat=seat,
@@ -129,7 +130,7 @@ class BookingModelTest(TestCase):
             )
 
     def test_booking_str(self):
-        # Test the string representation of the booking model
+        # test the string representation of the booking model
         user = User.objects.create_user(username="testuser", password="password123")
         movie = Movie.objects.create(
             movie_title="Test Movie",
@@ -148,7 +149,7 @@ class BookingModelTest(TestCase):
         self.assertEqual(str(booking), "testuser")
 
 
-# test api endpoints 
+### test api endpoints ###
 class PostViewTestCase(APITestCase):
     def setUp(self):
         # set up & create models
@@ -222,14 +223,14 @@ class PostViewTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["detail"], "Seat booked successfully.")
 
-        # Check if seat status updated
+        # check if seat status updated
         seat = Seat.objects.get(movie=self.movie, seat_number = 3)
         self.assertFalse(seat.seat_booking_status)
         
     # testing time: view booking history
 
     def test_booking_history(self):
-        self.client.force_authenticate(user=self.user)  # Authenticate the user
+        self.client.force_authenticate(user=self.user)  
         response = self.client.get(self.booking_history_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         serializer_data = BookingSerializer([self.booking], many=True).data

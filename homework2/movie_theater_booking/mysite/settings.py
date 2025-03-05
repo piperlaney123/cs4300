@@ -47,7 +47,7 @@ SECRET_KEY = 'django-insecure-m&%*+)fpefxow_q52%bc+y_bq5xj$475v1k!-)p&8$7wspifu$
 DEBUG = True
 
 # for some reason, my local host url is https://editor-pdehoyos-5.devedu.io/proxy/8000/....
-ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost", "editor-pdehoyos-5.devedu.io"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "localhost", "editor-pdehoyos-5.devedu.io", "app-pdehoyos-5.devedu.io"]
 
 
 # Application definition
@@ -143,13 +143,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-
-STATIC_URL = '/static/'
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static')
 ]
 
 # Default primary key field type
@@ -162,10 +159,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny', 
     ]
 }
-
-FORCE_SCRIPT_NAME = "/proxy/3000"
-
-USE_X_FORWARDED_HOST = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
